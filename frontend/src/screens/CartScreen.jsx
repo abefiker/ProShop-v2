@@ -23,9 +23,12 @@ const CartScreen = () => {
     navigate('/cart');
   };
   const removeFromCartHandler = async (id) => {
-    dispatch(removeFromCart({ id }));
+    dispatch(removeFromCart(id));
     navigate('/cart');
   };
+  const checkoutHandler =()=>{
+    navigate('/login?redirect=/shipping')
+  }
   return (
     <Row>
       <Col md={8}>
@@ -67,7 +70,7 @@ const CartScreen = () => {
                     <Button
                       type="button"
                       variant="light"
-                      onClick={removeFromCartHandler(item._id)}
+                      onClick={() => removeFromCartHandler(item._id)}
                     >
                       <FaTrash />
                     </Button>
@@ -96,6 +99,7 @@ const CartScreen = () => {
                 type="button"
                 className="btn-block"
                 disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
               >
                 Process to Checkout
               </Button>
