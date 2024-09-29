@@ -15,10 +15,12 @@ const app = express();
 app.use(express.json());
 const { notfound, errorHandler } = require('./middleware/errorHandler');
 const productRouter = require('./routes/productRoutes');
+const userRouter = require('./routes/userRoutes');
 app.get('/', (req, res) => {
   res.send('api is running');
 });
 app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
 app.use(notfound);
 app.use(errorHandler);
 app.listen(port, () => {
