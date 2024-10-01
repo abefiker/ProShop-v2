@@ -13,6 +13,7 @@ const app = express();
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 const { notfound, errorHandler } = require('./middleware/errorHandler');
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
