@@ -1,5 +1,5 @@
 const express = require('express');
-
+const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 // const cors = require('cors');
@@ -14,6 +14,7 @@ const app = express();
 // Middleware to parse JSON request bodies
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
 const { notfound, errorHandler } = require('./middleware/errorHandler');
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');

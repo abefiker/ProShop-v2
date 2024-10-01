@@ -1,11 +1,12 @@
-const asyncHandler = require('./middleware/asynchandler');
-const jwt = require('jwt');
+const asyncHandler = require('./asynchandler');
+const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 const protect = asyncHandler(async (req, res, next) => {
   let token;
-  token = req.cookie.jwt;
+  token = req.cookies.jwt;
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
       req.user = await User.findById(decoded.userId).select('-password');
       next();
     } catch (err) {
@@ -18,7 +19,7 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new Error('Not authorized,no token');
   }
 });
-const admin =(req, res, next) => {
+const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
