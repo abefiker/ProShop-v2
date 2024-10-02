@@ -26,9 +26,9 @@ const CartScreen = () => {
     dispatch(removeFromCart(id));
     navigate('/cart');
   };
-  const checkoutHandler =()=>{
-    navigate('/login?redirect=/shipping')
-  }
+  const checkoutHandler = () => {
+    navigate('/login?redirect=/shipping');
+  };
   return (
     <Row>
       <Col md={8}>
