@@ -14,7 +14,7 @@ const {
 const {protect,admin} = require('../middleware/authMiddleware')
 
 router.route('/').get(protect,admin,getUsers).post(registerUser);
-router.route('/login').post(authUser)
+router.route('/auth').post(authUser)
 router.route('/logout').post(logoutUser)
 router.route('/profile').get(protect,getUserProfile).put(protect,updateUserProfile)
 router
