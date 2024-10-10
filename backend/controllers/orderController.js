@@ -4,8 +4,38 @@ const Order = require('../models/orderModel');
 //@route POST /api/orders
 //@access Private
 exports.addOrderItems = asyncHandler(async (req, res) => {
-  // const order = await Order.create();
-  res.json('add order items');
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  } = req.body;
+  if(orderItems && orderItems.length === 0){
+    res.status(400)
+    throw new Error('No order items');
+  }else{
+    const order = new Order({
+      orderItems:orderItems.map((x)=>{
+        return {
+          ...x,
+          product: x._id,
+          _id:undefined,
+        }
+      }),
+      user: req.user._id,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    });
+    const createdOrder = await order.save();
+    res.status(201).json(createdOrder);
+  }
 });
 // @desc get logged in user orders
 //@route GET /api/orders/myorders
@@ -39,7 +69,7 @@ exports.updateOrderToDelivered = asyncHandler(async (req, res) => {
 // @desc Get all orders
 //@route GET /api/orders
 //@access Private/admin
-exports.getOrders= asyncHandler(async (req, res) => {
+exports.getOrders = asyncHandler(async (req, res) => {
   // const order = await Order.create();
   res.json('get all orders');
 });
