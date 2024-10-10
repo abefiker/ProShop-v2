@@ -18,11 +18,13 @@ app.use(cookieParser());
 const { notfound, errorHandler } = require('./middleware/errorHandler');
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
+const orderRouter = require('./routes/orderRoutes');
 app.get('/', (req, res) => {
   res.send('api is running');
 });
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
+app.use('/api/orders', orderRouter);
 app.use(notfound);
 app.use(errorHandler);
 app.listen(port, () => {
