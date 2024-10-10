@@ -13,17 +13,17 @@ exports.addOrderItems = asyncHandler(async (req, res) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-  if(orderItems && orderItems.length === 0){
-    res.status(400)
+  if (orderItems && orderItems.length === 0) {
+    res.status(400);
     throw new Error('No order items');
-  }else{
+  } else {
     const order = new Order({
-      orderItems:orderItems.map((x)=>{
+      orderItems: orderItems.map((x) => {
         return {
           ...x,
           product: x._id,
-          _id:undefined,
-        }
+          _id: undefined,
+        };
       }),
       user: req.user._id,
       shippingAddress,
@@ -41,8 +41,8 @@ exports.addOrderItems = asyncHandler(async (req, res) => {
 //@route GET /api/orders/myorders
 //@access Private
 exports.getMyOrders = asyncHandler(async (req, res) => {
-  // const order = await Order.create();
-  res.json('get my order');
+  const orders = await Order.find({ user: req.user._id });
+  res.status(200).json(orders);
 });
 // @desc get order by ID
 //@route GET /api/orders/:id
