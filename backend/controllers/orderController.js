@@ -48,8 +48,13 @@ exports.getMyOrders = asyncHandler(async (req, res) => {
 //@route GET /api/orders/:id
 //@access Private
 exports.getOrderById = asyncHandler(async (req, res) => {
-  // const order = await Order.create();
-  res.json('get order by id');
+  const order = await Order.findById(req.params.id).populate('user','name email');
+  if(order){
+    res.status(200).json(order);
+  }else{
+    res.status(404);
+    throw new Error('Resource not found');
+  }
 });
 // @desc update order to paid
 //@route PUT /api/orders/:id/pay
