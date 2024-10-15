@@ -27,7 +27,12 @@ exports.addOrderItems = asyncHandler(async (req, res) => {
       }),
       user: req.user._id,
       shippingAddress,
-      paymentMethod,
+      paymentMethod: {
+        type: paymentMethod, // Assuming it's a string from the frontend
+        status: 'Pending',   // Set a default or pass from the frontend
+        update_time: new Date().toISOString(), // Set the current time as default
+        email_address: req.user.email, // If applicable, set user's email
+      },
       itemsPrice,
       taxPrice,
       shippingPrice,

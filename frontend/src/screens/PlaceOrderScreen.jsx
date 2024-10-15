@@ -23,21 +23,27 @@ const PlaceOrderScreen = () => {
   }, [cart.shippingAddress.address, cart.paymentMethod, navigate]);
   const placeOrderHander = async () => {
     try {
-      const res = await createOrder({
+      const orderPayload = {
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
+        paymentMethod:cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
-      }).unwrap();
-      dispatch(clearCartItems())
-      navigate(`/orders/${res.id}`)
+      };
+  
+      console.log("Order Payload:", orderPayload); // Log the payload to check the structure
+  
+      const res = await createOrder(orderPayload).unwrap();
+      dispatch(clearCartItems());
+      navigate(`/order/${res._id}`);
     } catch (err) {
-      toast.error(err)
+      console.error("Error placing order:", err); // Log any errors
+      toast.error(err.data?.msg || err.msg || "Something went wrong");
     }
   };
+  
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -55,8 +61,7 @@ const PlaceOrderScreen = () => {
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Payment Method</h2>
-              <strong>Method:</strong>
-              {cart.paymentMethod}
+              <strong>Method:</strong> {cart.paymentMethod?.type || 'N/A'}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
@@ -76,12 +81,10 @@ const PlaceOrderScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
+                          <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -133,7 +136,7 @@ const PlaceOrderScreen = () => {
                 >
                   Place Order
                 </Button>
-                {isLoading && <Loader/>}
+                {isLoading && <Loader />}
               </ListGroup.Item>
             </ListGroup>
           </Card>
