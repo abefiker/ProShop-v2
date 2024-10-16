@@ -29,7 +29,7 @@ exports.addOrderItems = asyncHandler(async (req, res) => {
       shippingAddress,
       paymentMethod: {
         type: paymentMethod, // Assuming it's a string from the frontend
-        status: 'Pending',   // Set a default or pass from the frontend
+        status: 'Pending', // Set a default or pass from the frontend
         update_time: new Date().toISOString(), // Set the current time as default
         email_address: req.user.email, // If applicable, set user's email
       },
@@ -68,8 +68,22 @@ exports.getOrderById = asyncHandler(async (req, res) => {
 //@route PUT /api/orders/:id/pay
 //@access Private
 exports.updateOrderToPaid = asyncHandler(async (req, res) => {
-  // const order = await Order.create();
-  res.json('update order to paid');
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address,
+    };
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  }else{
+    res.status(404)
+    throw new Error('Order not found');
+  }
 });
 
 // @desc update order to delivered

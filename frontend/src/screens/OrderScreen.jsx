@@ -59,36 +59,29 @@ const OrderScreen = () => {
               <p>
                 <strong>Method:</strong> {order.paymentMethod?.type || 'N/A'}
               </p>
-              {order.isPaid ?(
-                <Message variant='success'>Paid on {order.isPaidAt}</Message>
-              ):(
-                <Message variant='danger'>Not Paid</Message>
+              {order.isPaid ? (
+                <Message variant="success">Paid on {order.isPaidAt}</Message>
+              ) : (
+                <Message variant="danger">Not Paid</Message>
               )}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2>Order Items</h2>
-                  {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
-                        </Col>
-                        <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
+              {order.orderItems.map((item, index) => (
+                <ListGroup.Item key={index}>
+                  <Row>
+                    <Col md={1}>
+                      <Image src={item.image} alt={item.name} fluid rounded />
+                    </Col>
+                    <Col>
+                      <Link to={`/product/${item.product}`}>{item.name}</Link>
+                    </Col>
+                    <Col md={4}>
+                      {item.qty} x ${item.price} = ${item.qty * item.price}
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))}
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -126,6 +119,7 @@ const OrderScreen = () => {
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
               {/* {PAY ORDER PLACEORDER} */}
+              {/* {MARK AS DELIVERED PLACEORDER} */}
               {/* <ListGroup.Item>
                 <Button
                   type="button"
