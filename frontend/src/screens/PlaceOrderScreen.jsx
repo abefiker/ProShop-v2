@@ -6,7 +6,7 @@ import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { useCreateOrderMutation } from '../slices/orderSlice';
+import { useCreateOrderMutation } from '../slices/orderApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
 
 const PlaceOrderScreen = () => {
@@ -26,24 +26,24 @@ const PlaceOrderScreen = () => {
       const orderPayload = {
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
-        paymentMethod:cart.paymentMethod,
+        paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
       };
-  
-      console.log("Order Payload:", orderPayload); // Log the payload to check the structure
-  
+
+      console.log('Order Payload:', orderPayload); // Log the payload to check the structure
+
       const res = await createOrder(orderPayload).unwrap();
       dispatch(clearCartItems());
       navigate(`/order/${res._id}`);
     } catch (err) {
-      console.error("Error placing order:", err); // Log any errors
-      toast.error(err.data?.msg || err.msg || "Something went wrong");
+      console.error('Error placing order:', err); // Log any errors
+      toast.error(err.data?.msg || err.msg || 'Something went wrong');
     }
   };
-  
+
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
