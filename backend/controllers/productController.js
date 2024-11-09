@@ -38,7 +38,6 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     image,
     category,
     countInStock,
-    numReviews,
     description,
   } = req.body;
   const product = await Product.findById(req.params.id);
@@ -49,7 +48,6 @@ exports.updateProduct = asyncHandler(async (req, res) => {
     product.image = image;
     product.category = category;
     product.countInStock = countInStock;
-    product.numReviews = numReviews;
     product.description = description;
     const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);

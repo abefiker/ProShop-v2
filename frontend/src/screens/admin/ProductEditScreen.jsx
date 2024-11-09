@@ -27,6 +27,7 @@ const ProductEditScreen = () => {
     refetch,
     error,
   } = useGetProductByIdQuery(productId);
+  console.log(product);
   useEffect(() => {
     if (product) {
       setName(product.name);
@@ -50,12 +51,11 @@ const ProductEditScreen = () => {
       countInStock,
       description,
     };
-    const result = await updateProduct(updateproduct);
+    const result = await updateProduct(updateproduct).unwrap();
     if (result.error) {
       toast.error(result.error);
     } else {
       toast.success('Product Updated Successfully');
-      refetch()
       navigate('/admin/productlist');
     }
   };
@@ -105,7 +105,7 @@ const ProductEditScreen = () => {
               <Form.Control
                 type="number"
                 placeholder="Enter count in stock"
-                value={name}
+                value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
               ></Form.Control>
             </Form.Group>
@@ -118,17 +118,23 @@ const ProductEditScreen = () => {
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Form.Group controlId="descriprion" className="my-3">
-              <Form.Label>Descriprion</Form.Label>
+            <Form.Group controlId="description" className="my-3">
+              <Form.Label>Description</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter descriprion"
+                placeholder="Enter description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Button type="submit" variant="primary" className="my-2">
-              update
+
+            <Button
+              type="submit"
+              variant="primary"
+              className="my-2"
+              disabled={isUpdate}
+            >
+              {isUpdate ? 'Updating...' : 'Update'}
             </Button>
           </Form>
         )}
