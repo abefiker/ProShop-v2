@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Row, Col, ListGroup, Button, Card, Image } from 'react-bootstrap';
+import { Row, Col, ListGroup, Card, Image } from 'react-bootstrap';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { toast } from 'react-toastify';
 // import { useSelector } from 'react-redux';
@@ -52,11 +52,6 @@ const OrderScreen = () => {
   }, [paypal, loadingPayPal, order, paypalDispatch]);
 
   // sourcery skip: avoid-function-declarations-in-blocks
-  async function onApprovedTest() {
-    await payOrder({ orderId, details: { payer: {} } });
-    refetch();
-    toast.success('Order paid successfully');
-  }
   function createOrder(data, actions) {
     return actions.order
       .create({
@@ -198,14 +193,6 @@ const OrderScreen = () => {
                   {isPending ? (
                     <Loader />
                   ) : (
-                    // <div>
-                    //   {/* <Button
-                    //     onClick={onApprovedTest}
-                    //     style={{ marginBottom: '10px' }}
-                    //   >
-                    //     Test pay order
-                    //   </Button> */}
-                    // </div>
                     <div>
                       <PayPalButtons
                         createOrder={createOrder}
@@ -217,17 +204,6 @@ const OrderScreen = () => {
                 </ListGroup.Item>
               )}
               {/* {MARK AS DELIVERED PLACEORDER} */}
-              {/* <ListGroup.Item>
-                <Button
-                  type="button"
-                  className="btn btn-block"
-                  disabled={order.cartItems.length === 0}
-                  onClick={placeOrderHander}
-                >
-                  Place Order
-                </Button>
-                {isLoading && <Loader />}
-              </ListGroup.Item> */}
               <ListGroup.Item>
                 {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
