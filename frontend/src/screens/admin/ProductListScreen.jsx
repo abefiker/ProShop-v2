@@ -51,6 +51,7 @@ const ProductListScreen = () => {
         </Col>
       </Row>
       {loadingCreate && <Loader />}
+      {loadingDelete && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -87,7 +88,6 @@ const ProductListScreen = () => {
                     onClick={() => deleteHandle(product._id)}
                   >
                     <FaTrash style={{ color: 'white' }} />
-                    {loadingDelete && <Loader />}
                   </Button>
                 </td>
               </tr>

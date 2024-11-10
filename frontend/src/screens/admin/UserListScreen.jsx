@@ -1,15 +1,32 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button } from 'react-bootstrap';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaEdit, FaTrash, FaAngellist } from 'react-icons/fa';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
-import { useGetUsersQuery } from '../../slices/usersApiSlice';
+import { toast } from 'react-toastify';
+import {
+  useGetUsersQuery,
+  useDeleteUserMutation,
+} from '../../slices/usersApiSlice';
 const UserListScreen = () => {
-  const { data: users, isLoading, error } = useGetUsersQuery();
+  const { data: users, refetch, isLoading, error } = useGetUsersQuery();
+  const [deleteUser, { isLoading: loadingDelete }] = useDeleteUserMutation();
+  const deleteHandle = async (id) => {
+    if (window.confirm('Are you sure you want to delete')) {
+      try {
+        await deleteUser(id);
+        toast.success('User deleted successfully');
+        refetch();
+      } catch (error) {
+        toast.error('Failed to delete user');
+      }
+    }
+  };
   return (
     <div>
       <h2>User List</h2>
+      {loadingDelete && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -23,7 +40,6 @@ const UserListScreen = () => {
               <th>EMAIL</th>
               <th>IS_ADMIN</th>
               <th></th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -32,30 +48,26 @@ const UserListScreen = () => {
                 <td>{user._id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                {/* {/* <td>
-                    {user.isPaid ? (
-                      user.PaidAt ? (
-                        user.PaidAt.substring(0, 10)
-                      ) : (
-                        'N/A'
-                      )
-                    ) : (
-                      <FaTimes style={{ color: 'red' }} />
-                    )}
-                  </td> */}
                 <td>
                   {user.isAdmin ? (
-                    <FaTimes style={{ color: 'green' }} />
+                    <FaAngellist style={{ color: 'green' }} />
                   ) : (
                     <FaTimes style={{ color: 'red' }} />
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/users/${user._id}`}>
-                    <Button className="btn-sm" variant="light">
-                      Details
+                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
+                    <Button variant="light" className="btn-sm mx-2">
+                      <FaEdit />
                     </Button>
                   </LinkContainer>
+                  <Button
+                    variant="danger"
+                    className="btn-sm"
+                    onClick={() => deleteHandle(user._id)}
+                  >
+                    <FaTrash style={{ color: 'white' }} />
+                  </Button>
                 </td>
               </tr>
             ))}
