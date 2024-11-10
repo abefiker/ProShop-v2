@@ -13,5 +13,6 @@ router
   .get(productController.getProductsById)
   .put(protect, admin, productController.updateProduct)
   .delete(protect, admin, productController.deleteProduct);
+router.route('/:id/reviews').post(protect, productController.reviewProduct);
 
 module.exports = router;

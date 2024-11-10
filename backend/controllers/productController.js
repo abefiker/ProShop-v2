@@ -53,3 +53,33 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
   await Product.findByIdAndDelete(req.params.id);
   res.json({ message: 'Product deleted successfully' });
 });
+
+exports.reviewProduct = asyncHandler(async (req, res) => {
+  const { reting, comment } = req;
+  const product = await Product.findById(req.params.id);
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error('Product already reviewed');
+    }
+    const review = {
+      user: req.user._id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+    };
+    product.reviews.push(review);
+    product.numReviews = product.reviews.length;
+    product.rating =
+      product.reviews.reduce((acc, item) => acc + item.rating, 0) /
+      product.reviews.length;
+    await product.save();
+    res.status(201).json({ message: 'Review added' });
+  } else {
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
