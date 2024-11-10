@@ -29,7 +29,7 @@ const ProductScreen = () => {
 
   return (
     <>
-      <Link className="btn btn-light my-3" to="/"> 
+      <Link className="btn btn-light my-3" to="/">
         Go Back
       </Link>
       {isLoading ? (
@@ -44,7 +44,12 @@ const ProductScreen = () => {
         <>
           <Row>
             <Col md={5}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Image
+                src={product.image}
+                alt={product.name}
+                style={{ width: '640px', height: '510px', objectFit: 'cover' }}
+                fluid
+              />
             </Col>
             <Col md={4}>
               <ListGroup>
