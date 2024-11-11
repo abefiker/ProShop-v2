@@ -13,8 +13,9 @@ import { useDeleteProductMutation } from '../../slices/productsApiSlice';
 import PaginationComponent from '../../components/PaginationComponent';
 import { useParams } from 'react-router-dom';
 const ProductListScreen = () => {
-  const { pageNumber } = useParams();
+  const { keyword, pageNumber } = useParams();
   const { data, isLoading, error, refetch } = useGetProductsQuery({
+    keyword,
     pageNumber,
   });
   const [createProduct, { isLoading: loadingCreate }] =
@@ -104,6 +105,7 @@ const ProductListScreen = () => {
             pages={data.pages}
             page={data.page}
             isAdmin={true}
+            keyword={keyword || ''}
           />
         </>
       )}

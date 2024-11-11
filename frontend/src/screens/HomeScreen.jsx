@@ -6,8 +6,11 @@ import Message from '../components/Message';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 import PaginationComponent from '../components/PaginationComponent';
 const HomeScreen = () => {
-  const { pageNumber } = useParams();
-  const { data, error, isLoading } = useGetProductsQuery({ pageNumber });
+  const { keyword, pageNumber } = useParams();
+  const { data, error, isLoading } = useGetProductsQuery({
+    keyword,
+    pageNumber,
+  });
 
   return (
     <>
@@ -30,7 +33,7 @@ const HomeScreen = () => {
                 </Col>
               ))}
           </Row>
-          <PaginationComponent pages={data.pages} page={data.page} />
+          <PaginationComponent pages={data.pages} page={data.page} keyword={keyword || ''}/>
         </>
       )}
     </>
