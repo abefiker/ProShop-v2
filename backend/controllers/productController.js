@@ -55,7 +55,7 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
 });
 
 exports.reviewProduct = asyncHandler(async (req, res) => {
-  const { reting, comment } = req;
+  const { rating, comment } = req.body;
   const product = await Product.findById(req.params.id);
   if (product) {
     const alreadyReviewed = product.reviews.find(
