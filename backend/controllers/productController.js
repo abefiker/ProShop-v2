@@ -24,6 +24,10 @@ exports.getProductsById = asyncHandler(async (req, res) => {
     throw new Error('Resource not found');
   }
 });
+exports.getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+  res.json(products);
+});
 exports.createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: 'sample name',
