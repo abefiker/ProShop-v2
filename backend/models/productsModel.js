@@ -34,6 +34,7 @@ const productSchema = mongoose.Schema(
     name: {
       type: String,
       required: true,
+      index: true,
     },
     image: {
       type: String,
@@ -77,6 +78,7 @@ const productSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
+// Ensure case-insensitive search with collation
+productSchema.index({ name: 1 }, { collation: { locale: 'en', strength: 2 } });
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;

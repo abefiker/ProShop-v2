@@ -1,5 +1,5 @@
 import { Row, Col } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -14,6 +14,11 @@ const HomeScreen = () => {
 
   return (
     <>
+      {keyword && (
+        <Link to="/" className="btn btn-light">
+          Go Back
+        </Link>
+      )}
       {isLoading ? (
         <div>
           <Loader />
@@ -33,7 +38,11 @@ const HomeScreen = () => {
                 </Col>
               ))}
           </Row>
-          <PaginationComponent pages={data.pages} page={data.page} keyword={keyword || ''}/>
+          <PaginationComponent
+            pages={data.pages}
+            page={data.page}
+            keyword={keyword || ''}
+          />
         </>
       )}
     </>
