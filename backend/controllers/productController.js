@@ -1,8 +1,13 @@
 const Product = require('../models/productsModel');
 const asyncHandler = require('../middleware/asynchandler');
 exports.getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find();
-  res.json(products);
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
+  const count = await Product.countDocuments();
+  const products = await Product.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 exports.getProductsById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
@@ -25,10 +30,9 @@ exports.createProduct = asyncHandler(async (req, res) => {
     numReviews: 0,
     description: 'sample description',
   });
-  const createdProduct = await product
-    .save()
-    .res.status(201)
-    .json(createdProduct);
+
+  const createdProduct = await product.save();
+  res.status(201).json(createdProduct);
 });
 exports.updateProduct = asyncHandler(async (req, res) => {
   const { name, price, brand, image, category, countInStock, description } =
