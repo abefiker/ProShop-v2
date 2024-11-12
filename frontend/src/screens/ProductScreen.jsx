@@ -20,6 +20,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { addToCart } from '../slices/cartSlice';
 import { toast } from 'react-toastify';
+import Meta from '../components/Meta';
 const ProductScreen = () => {
   const { id: productId } = useParams();
   const dispatch = useDispatch();
@@ -77,6 +78,7 @@ const ProductScreen = () => {
         </Message>
       ) : (
         <>
+          <Meta title={product.name} />
           <Row>
             <Col md={5}>
               <Image
@@ -171,7 +173,11 @@ const ProductScreen = () => {
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} />
-                    <p>{review.createdAt ? review.createdAt.substring(0, 10) : 'Date not available'}</p>
+                    <p>
+                      {review.createdAt
+                        ? review.createdAt.substring(0, 10)
+                        : 'Date not available'}
+                    </p>
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}

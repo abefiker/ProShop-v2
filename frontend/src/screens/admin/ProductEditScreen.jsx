@@ -19,6 +19,7 @@ import {
 } from 'firebase/storage';
 import app from '../../firebase';
 import Resizer from 'react-image-file-resizer';
+import Meta from '../../components/Meta';
 const ProductEditScreen = () => {
   const { id: productId } = useParams();
   const [name, setName] = useState('');
@@ -54,7 +55,6 @@ const ProductEditScreen = () => {
 
   // Handle file selection
 
-
   // Handle file selection and resizing
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -73,11 +73,11 @@ const ProductEditScreen = () => {
           'file' // output type: can also be 'blob' or 'base64'
         );
       } catch (error) {
-        console.error("Error resizing image:", error);
+        console.error('Error resizing image:', error);
       }
     }
   };
-  
+
   // Upload file when a new thumbnail is selected
   useEffect(() => {
     if (image) {
@@ -155,82 +155,85 @@ const ProductEditScreen = () => {
         ) : error ? (
           <Message variant="danger">{error?.data?.msg || error.msg}</Message>
         ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name" className="my-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="name"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="price" className="my-3">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+          <>
+            <Meta title={product.name} />
+            <Form onSubmit={submitHandler}>
+              <Form.Group controlId="name" className="my-3">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="name"
+                  placeholder="Enter name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="price" className="my-3">
+                <Form.Label>Price</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-            {/* Image upload handling */}
-            <Form.Group className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={handleFileChange}
-                accept="image/*"
-              ></Form.Control>
-            </Form.Group>
-            {imgPercentage > 0 && <p>Upload Progress: {imgPercentage}%</p>}
-            <Form.Group controlId="brand" className="my-3">
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter brand"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="countInStock" className="my-3">
-              <Form.Label>Count In Stock</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Enter count in stock"
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="category" className="my-3">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId="description" className="my-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              {/* Image upload handling */}
+              <Form.Group className="mb-3">
+                <Form.Label>Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={handleFileChange}
+                  accept="image/*"
+                ></Form.Control>
+              </Form.Group>
+              {imgPercentage > 0 && <p>Upload Progress: {imgPercentage}%</p>}
+              <Form.Group controlId="brand" className="my-3">
+                <Form.Label>Brand</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter brand"
+                  value={brand}
+                  onChange={(e) => setBrand(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="countInStock" className="my-3">
+                <Form.Label>Count In Stock</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter count in stock"
+                  value={countInStock}
+                  onChange={(e) => setCountInStock(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="category" className="my-3">
+                <Form.Label>Category</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+              <Form.Group controlId="description" className="my-3">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
 
-            <Button
-              type="submit"
-              variant="primary"
-              className="my-2"
-              disabled={isUpdate || imgPercentage < 100}
-            >
-              {isUpdate ? 'Updating...' : 'Update'}
-            </Button>
-          </Form>
+              <Button
+                type="submit"
+                variant="primary"
+                className="my-2"
+                disabled={isUpdate || imgPercentage < 100}
+              >
+                {isUpdate ? 'Updating...' : 'Update'}
+              </Button>
+            </Form>
+          </>
         )}
       </FormContainer>
     </>
