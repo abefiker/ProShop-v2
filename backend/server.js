@@ -1,6 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const path = require('path');
+
 dotenv.config();
 // const cors = require('cors');
 const port = process.env.PORT || 5000;
@@ -19,9 +21,7 @@ const { notfound, errorHandler } = require('./middleware/errorHandler');
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
 const orderRouter = require('./routes/orderRoutes');
-app.get('/', (req, res) => {
-  res.send('api is running');
-});
+
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
@@ -29,6 +29,16 @@ app.use('/api/orders', orderRouter);
 app.get('/api/config/paypal', (req, res) => {
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
 });
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('api is running');
+  });
+}
 app.use(notfound);
 app.use(errorHandler);
 app.listen(port, () => {
