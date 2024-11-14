@@ -8,6 +8,7 @@ import logo from '../assets/logo.png';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { toast } from 'react-toastify';
 import SearchBox from './SearchBox';
+import { resetCartItems } from '../slices/cartSlice';
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Header = () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
+      dispatch(resetCartItems())
       navigate('/login');
     } catch (err) {
       toast.error(err?.data?.msg || err.error);

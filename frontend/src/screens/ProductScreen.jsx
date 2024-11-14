@@ -74,7 +74,7 @@ const ProductScreen = () => {
         </div>
       ) : error ? (
         <Message variant="danger">
-          {error?.data?.message || error.error}
+          {error?.data?.msg || error.error}
         </Message>
       ) : (
         <>

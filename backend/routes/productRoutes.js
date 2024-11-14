@@ -3,7 +3,7 @@ const router = express.Router();
 
 const productController = require('../controllers/productController');
 const { protect, admin } = require('../middleware/authMiddleware');
-
+const { checkObjectId } = require('../middleware/checkObjectId');
 router
   .route('/')
   .get(productController.getProducts)
@@ -12,9 +12,11 @@ router
 router.route('/top').get(productController.getTopProducts);
 router
   .route('/:id')
-  .get(productController.getProductsById)
-  .put(protect, admin, productController.updateProduct)
-  .delete(protect, admin, productController.deleteProduct);
-router.route('/:id/reviews').post(protect, productController.reviewProduct);
+  .get(checkObjectId, productController.getProductsById)
+  .put(protect, admin, checkObjectId, productController.updateProduct)
+  .delete(protect, admin, checkObjectId, productController.deleteProduct);
+router
+  .route('/:id/reviews')
+  .post(protect, checkObjectId, productController.reviewProduct);
 
 module.exports = router;
