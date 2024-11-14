@@ -79,7 +79,7 @@ const OrderScreen = () => {
             update_time,
             payer: { email_address: payer.email_address },
           },
-        });
+        }).unwrap();
         await refetch();
         toast.success('Order paid successfully');
       } catch (err) {
@@ -94,7 +94,7 @@ const OrderScreen = () => {
     useDeliveredOrderMutation();
   const deliverHandler = async () => {
     try {
-      await deliverOrder(orderId);
+      await deliverOrder(orderId).unwrap();
       refetch();
       toast.success('Order is delivered');
     } catch (err) {
