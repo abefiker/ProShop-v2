@@ -25,9 +25,25 @@ exports.getProductsById = asyncHandler(async (req, res) => {
   }
 });
 exports.getTopProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
-  res.json(products);
+  console.log('checking')
+  try {
+    console.log('Starting to fetch top products...');
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+    console.log('Fetched products:', products);
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({ message: 'No top products found' });
+    }
+
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching top products:', error);
+    res
+      .status(500)
+      .json({ message: 'Server error while fetching top products' });
+  }
 });
+
 exports.createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: 'sample name',

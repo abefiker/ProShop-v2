@@ -18,6 +18,7 @@ const ProductListScreen = () => {
     keyword,
     pageNumber,
   });
+  
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
   const [deleteProduct, { isLoading: loadingDelete }] =

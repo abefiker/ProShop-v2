@@ -9,12 +9,12 @@ router
   .get(productController.getProducts)
   .post(protect, admin, productController.createProduct);
 
+router.route('/top').get(productController.getTopProducts);
 router
   .route('/:id')
   .get(productController.getProductsById)
   .put(protect, admin, productController.updateProduct)
   .delete(protect, admin, productController.deleteProduct);
 router.route('/:id/reviews').post(protect, productController.reviewProduct);
-router.route('/top').get(productController.getTopProducts);
 
 module.exports = router;

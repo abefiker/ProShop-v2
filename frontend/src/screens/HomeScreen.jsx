@@ -12,11 +12,12 @@ const HomeScreen = () => {
     keyword,
     pageNumber,
   });
-
+  console.log(data);
   return (
     <>
       {!keyword ? (
         <ProductCarousel />
+    
       ) : (
         <Link to="/" className="btn btn-light">
           Go Back
